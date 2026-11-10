@@ -26,6 +26,13 @@ class FakeStore:
     def get_user_by_email(self, email):
         return next((dict(u) for u in self.users.values() if u["email"] == email), None)
 
+    def create_user(self, email, name, password_hash):
+        if any(u["email"] == email for u in self.users.values()):
+            return None
+        new_id = max(self.users) + 1
+        self.users[new_id] = {"id": new_id, "email": email, "name": name, "password_hash": password_hash}
+        return {"id": new_id, "email": email, "name": name}
+
     def create_session(self, token_hash, user_id, expires_at):
         self.sessions[token_hash] = (user_id, expires_at)
 

@@ -14,13 +14,30 @@ class LoginBody(BaseModel):
     password: str
 
 
-@router.post("/login")
-def login(body: LoginBody, response: Response, store=Depends(get_store)):
-    user, token = auth.login(store, body.email, body.password)
+class RegisterBody(BaseModel):
+    email: str
+    name: str
+    password: str
+
+
+def set_session_cookie(response, token):
     response.set_cookie(
         SESSION_COOKIE, token, max_age=SESSION_DAYS * 86400,
         httponly=True, samesite="lax", secure=secure_cookies(),
     )
+
+
+@router.post("/register", status_code=201)
+def register(body: RegisterBody, response: Response, store=Depends(get_store)):
+    user, token = auth.register(store, body.email, body.name, body.password)
+    set_session_cookie(response, token)
+    return {"user": user}
+
+
+@router.post("/login")
+def login(body: LoginBody, response: Response, store=Depends(get_store)):
+    user, token = auth.login(store, body.email, body.password)
+    set_session_cookie(response, token)
     return {"user": user}
 
 

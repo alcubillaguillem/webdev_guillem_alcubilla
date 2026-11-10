@@ -59,7 +59,7 @@ Every tool calls the same function in `src/services/` as the matching HTTP route
 
 ## UI
 <!-- Stack, and the three or more screens. The graded checklist lives in docs/UI.md. -->
-Plain HTML and JavaScript served by FastAPI, styled with CSS design tokens. Four screens: sign in, my groups, one group (expenses and balances), add expense (with receipt upload). The checklist is in `docs/UI.md`.
+Plain HTML and JavaScript served by FastAPI, styled with CSS design tokens. Five screens: sign in, create an account, my groups, one group (expenses and balances), add expense (with receipt upload). The checklist is in `docs/UI.md`.
 
 ## Architecture
 <!-- Exercise 3. One request traced through every layer, naming the file for each one,
@@ -87,6 +87,8 @@ Plain HTML and JavaScript served by FastAPI, styled with CSS design tokens. Four
 - [AC-14] Signing in with a wrong password shows "Wrong e-mail or password" and no row appears in `sessions`.
 - [AC-15] Deleting Ana's row in `memberships` for one group and reloading `/groups` removes that group from the screen.
 - [AC-16] Pressing "Sign out" on `/groups` deletes the user's row in `sessions`, and reloading `/groups` lands on `/login`.
+- [AC-17] A visitor who creates an account on `/register` with a new e-mail, a name and a password of 8 or more characters lands on `/groups` signed in; `users` has one new row whose `password_hash` is a bcrypt hash, never the password.
+- [AC-18] Creating an account with an e-mail that already exists gets 409 with "An account with this e-mail already exists", and no new row appears in `users`; a password shorter than 8 characters gets 422 and no row either.
 
 ## Traceability
 <!-- Filled in from Exercise 3 onward: each AC id, and the test that names it. -->
@@ -97,6 +99,8 @@ Plain HTML and JavaScript served by FastAPI, styled with CSS design tokens. Four
 | AC-14 | `tests/test_slice1.py::test_ac14_wrong_password_is_refused_and_creates_no_session` |
 | AC-15 | `tests/test_slice1.py::test_ac15_removed_membership_disappears_from_the_list` |
 | AC-16 | `tests/test_slice1.py::test_ac16_sign_out_deletes_the_session` |
+| AC-17 | `tests/test_register.py::test_ac17_new_account_is_created_hashed_and_signed_in` |
+| AC-18 | `tests/test_register.py::test_ac18_existing_email_is_refused_with_409`, `test_ac18_short_password_is_refused_with_422` |
 | AC-1 to AC-11 | (from Exercise 3) |
 
 ## Spec vs result

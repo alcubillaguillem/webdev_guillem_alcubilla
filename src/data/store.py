@@ -1,5 +1,6 @@
 """Data access: every SQL query of the app lives here, behind plain methods."""
 from sqlalchemy import text
+from sqlalchemy.exc import IntegrityError
 
 
 class Store:
@@ -13,6 +14,21 @@ class Store:
                 {"e": email},
             ).mappings().first()
         return dict(row) if row else None
+
+    def create_user(self, email, name, password_hash):
+        """Insert a user; return None when the e-mail is already taken."""
+        try:
+            with self.engine.begin() as conn:
+                row = conn.execute(
+                    text(
+                        "INSERT INTO users (email, name, password_hash) VALUES (:e, :n, :p)"
+                        " RETURNING id, email, name"
+                    ),
+                    {"e": email, "n": name, "p": password_hash},
+                ).mappings().first()
+        except IntegrityError:
+            return None
+        return dict(row)
 
     def create_session(self, token_hash, user_id, expires_at):
         with self.engine.begin() as conn:

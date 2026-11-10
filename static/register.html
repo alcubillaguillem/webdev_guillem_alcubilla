@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create an account · SplitMate</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <main>
+    <h1>Create an account</h1>
+    <form id="register-form" novalidate>
+      <label>Name <input id="name" name="name" type="text" autocomplete="name" required></label>
+      <label>E-mail <input id="email" name="email" type="email" autocomplete="email" required></label>
+      <label>Password <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" required>
+        <span class="muted">At least 8 characters.</span></label>
+      <p id="register-error" class="error" role="alert" hidden></p>
+      <button id="register-button" type="submit">Create account</button>
+    </form>
+    <p class="muted">Already have an account? <a href="/login">Sign in</a></p>
+  </main>
+  <script src="/static/js/register.js"></script>
+</body>
+</html>

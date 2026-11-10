@@ -30,6 +30,11 @@ def login_page():
     return FileResponse(STATIC / "login.html")
 
 
+@router.get("/register")
+def register_page():
+    return FileResponse(STATIC / "register.html")
+
+
 @router.get("/groups")
 def groups_page(request: Request):
     if not signed_in(request):
