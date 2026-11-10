@@ -86,12 +86,21 @@ Plain HTML and JavaScript served by FastAPI, styled with CSS design tokens. Four
 - [AC-13] After signing in with a seeded account (`ana@example.com`), `/groups` shows the two seeded groups she belongs to, each with its name and her role, and not the seeded group she is not in.
 - [AC-14] Signing in with a wrong password shows "Wrong e-mail or password" and no row appears in `sessions`.
 - [AC-15] Deleting Ana's row in `memberships` for one group and reloading `/groups` removes that group from the screen.
+- [AC-16] Pressing "Sign out" on `/groups` deletes the user's row in `sessions`, and reloading `/groups` lands on `/login`.
 
 ## Traceability
 <!-- Filled in from Exercise 3 onward: each AC id, and the test that names it. -->
 | Criterion | Test |
 | --- | --- |
-| AC-1 | (from Exercise 3) |
+| AC-12 | `tests/test_slice1.py::test_ac12_groups_page_without_session_redirects_to_login`, `test_ac12_groups_api_without_session_returns_401` |
+| AC-13 | `tests/test_slice1.py::test_ac13_signed_in_user_sees_only_her_groups_with_role` |
+| AC-14 | `tests/test_slice1.py::test_ac14_wrong_password_is_refused_and_creates_no_session` |
+| AC-15 | `tests/test_slice1.py::test_ac15_removed_membership_disappears_from_the_list` |
+| AC-16 | `tests/test_slice1.py::test_ac16_sign_out_deletes_the_session` |
+| AC-1 to AC-11 | (from Exercise 3) |
 
 ## Spec vs result
 <!-- After the agent builds the slice: which criteria passed, which it missed or reinterpreted, and what you changed in this spec because of it. -->
+- Passed: AC-12 to AC-15, checked by hand against PostgreSQL: `curl -i /groups` → 302 to `/login`, `curl -i /api/groups` → 401; Ana sees her two groups with her role and not the Rila trip; a wrong password shows "Wrong e-mail or password" with 0 rows in `sessions`; deleting her Plovdiv membership removed it on reload.
+- Reinterpreted: the agent added a "Sign out" button and matched e-mails case-insensitively. Neither was in any criterion, so nothing said what signing out must do to the database.
+- Changed: added [AC-16]: signing out deletes the row in `sessions` and `/groups` goes back to `/login`.
