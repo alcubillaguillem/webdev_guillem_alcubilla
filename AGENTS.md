@@ -4,21 +4,28 @@ Read this file at the start of every session. Keep it short and correct; update 
 
 ## Project
 <!-- One or two sentences: what the app does and for whom. Link SPEC.md. -->
+SplitMate: Erasmus students who share a flat or a trip record what each paid; the app splits each expense and shows who owes whom.
 See `SPEC.md` for goals, non-goals and acceptance criteria.
 
 ## Commands
 <!-- How to install, run, test. Keep these exact and working. -->
-- Install: 
-- Run: 
-- Test: 
-- Coverage: 
-- MCP server: 
+- Install: `pip install -r requirements.txt`
+- Run: `uvicorn src.main:app --reload --port 8000` (needs `DATABASE_URL`; pending migrations run at startup)
+- Test: `pytest`
+- Coverage: `pytest --cov=src --cov-fail-under=80`
+- MCP server: `npm run --silent mcp` (needs `MCP_TOKEN` from Exercise 3 on)
 
 ## Conventions
 <!-- Folder layout, naming, where business rules live, how errors are returned to the client. -->
+- Python in `src/`: `routes/` → `services/` → `data/`, never skipping a layer. SQL only in `src/data/`.
+- Business rules and ownership checks in `src/services/`; a service raises a domain error and the route turns it into a status code (401 no session, 403 not allowed, 404, 409, 422).
+- Every schema change is a new numbered file in `migrations/` (`001_init.sql`, ...). Never edit one that has run.
+- Static UI in `static/`; colours, spacing, type and radius only from the tokens in `static/tokens.css`.
+- Amounts are integer cents. Errors reach the client as `{"error": "<a readable sentence>"}`.
 
 ## Layers
 <!-- Fill in the file or folder for each layer. -->
+Routes in `src/routes/`, services in `src/services/`, data access in `src/data/`, MCP tools in `mcp-server/server.py`.
 Requests arrive two ways and both end in the same place:
 
 - HTTP route handler → service → data access → database
@@ -30,7 +37,7 @@ that talks to the database directly is a second, unguarded way into your data: n
 
 ## The model feature
 <!-- Provider, env var, and the call site. -->
-- The provider is named in exactly one file: 
+- The provider is named in exactly one file: `src/services/receipts.py` (env vars `GEMINI_API_KEY`, `MODEL_NAME`).
 - The key comes from an environment variable and is never committed or logged.
 - Every call has a timeout and a deterministic fallback, so the app still works when the provider is down or rate-limited.
 - The model's output is re-checked against real data before anything is saved or shown.
