@@ -15,3 +15,11 @@ class NotAuthenticated(DomainError):
 
 class InvalidCredentials(DomainError):
     status = 401
+
+
+class InvalidInput(DomainError):
+    status = 422
+
+
+class Conflict(DomainError):
+    status = 409
