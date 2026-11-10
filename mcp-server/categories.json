@@ -1,0 +1,8 @@
+[
+  { "name": "food", "description": "Groceries, restaurants and takeaway" },
+  { "name": "rent", "description": "Rent and deposit for the shared flat" },
+  { "name": "utilities", "description": "Electricity, water, gas and internet" },
+  { "name": "transport", "description": "Buses, trains, flights and taxis" },
+  { "name": "leisure", "description": "Nights out, museums, trips and tickets" },
+  { "name": "other", "description": "Anything that fits no other category" }
+]

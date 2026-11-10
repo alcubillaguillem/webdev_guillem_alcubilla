@@ -1,0 +1,9 @@
+{
+  "name": "splitmate",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SplitMate. Python project; this file only gives the course self-checks and CI a standard way to start the MCP server.",
+  "scripts": {
+    "mcp": "python3 mcp-server/server.py"
+  }
+}
