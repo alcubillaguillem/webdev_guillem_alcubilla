@@ -4,3 +4,7 @@ One row per agent session. In Gemini CLI, type `/stats` before you quit and copy
 
 | Date | Tool | Input tokens | Output tokens | Credits (if no tokens) | List-price cost |
 |---|---|---|---|---|---|
+| 2026-11-10 | Gemini CLI | 24,771 (8,121 cached) | 57 | | $0.0089 |
+| 2026-11-10 | Gemini CLI | 24,742 (8,121 cached) | 53 | | $0.0089 |
+
+Price list: Gemini 3 Flash Preview (`gemini-3-flash-preview`), paid tier Standard, from https://ai.google.dev/gemini-api/docs/pricing on 2026-11-10: $0.50 per 1M input tokens, $0.05 per 1M cached input tokens, $3.00 per 1M output tokens. Cost = ((input − cached) × 0.50 + cached × 0.05 + output × 3.00) / 1M. I planned to use Gemini 2.5 Flash ($0.30 input, $2.50 output), but the API answers that it is no longer available to new users.

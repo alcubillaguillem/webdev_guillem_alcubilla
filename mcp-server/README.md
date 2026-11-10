@@ -65,4 +65,4 @@ Self-check: `node mcp-server/check.mjs -- npm run --silent mcp` (12/12).
 
 
 ## The description experiment
-<!-- Three sentences: what you changed in the description, whether the model chose the tool differently, and why you think so. -->
+I replaced the `find_lecture` description with the single word "Lectures.", so it no longer said what the tool returns, the 1 to 12 range or when to use it. The model did not choose differently: in both Gemini CLI sessions (gemini-3-flash-preview, same question "What does lecture 7 cover?") it called `find_lecture` with `number: 7` and answered "Evaluating output" with the same three topics. I think it still worked because the tool name `find_lecture` and the `number` field ("Lecture number, 1 to 12") already match the question, and the only other tool is about expense categories, so a vague description only starts to hurt when several tools compete or the name says less.
