@@ -69,16 +69,29 @@ Plain HTML and JavaScript served by FastAPI, styled with CSS design tokens. Four
 <!-- Every criterion carries an id. A test proves it by naming that id in its title, for example
      test('AC-3 a booking that overlaps another is refused with 409', ...).
      Say who acts, what they see, and what must be true in the database. -->
-<!-- TODO Guillem: at least eight criteria for the whole project, ids AC-1, AC-2... -->
+- [AC-1] A member who adds an expense of 30.00 € split equally among three members sees it in the group's list, and `expense_shares` holds three rows of 1000 cents each.
+- [AC-2] A member who adds an expense whose shares do not add up to the total gets 422 with "The shares must add up to the total", and no row appears in `expenses`.
+- [AC-3] A signed-in user who is not a member of a group and tries to add an expense to it gets 403, and no row appears in `expenses`.
+- [AC-4] A member who tries to edit or delete an expense paid by another member gets 403, and the expense is unchanged; without a session the same request gets 401.
+- [AC-5] After Ana pays 30.00 € split equally with Ben and Carla, the group screen shows "Ben owes Ana 10.00 €" and "Carla owes Ana 10.00 €".
+- [AC-6] A member with a non-zero balance who tries to leave the group gets 409 with "Settle your balance before leaving", and their row in `memberships` remains.
+- [AC-7] Only the owner can remove a member: a member who tries gets 403; the owner's request deletes the row in `memberships`.
+- [AC-8] Signing in with Google with a verified address that already has a password account signs into that account: no second row appears in `users`.
+- [AC-9] With no model key set, uploading a receipt leaves the amount, date, merchant and category fields empty and shows "Could not read the receipt, type it in"; no row appears in `expenses`.
+- [AC-10] A receipt for which the model returns a category outside the fixed list is shown with the category `other`, and a date in the future is left blank.
+- [AC-11] The MCP tool `add_expense` with shares that do not add up returns `isError: true` with the same message as the API (AC-2), and no row appears in `expenses`.
 
 ### Slice 1: sign-in and the my groups list
-<!-- TODO Guillem: at least three more criteria, ids continuing. -->
+- [AC-12] A visitor who opens `/groups` without signing in lands on `/login`, and `GET /api/groups` without a session returns 401.
+- [AC-13] After signing in with a seeded account (`ana@example.com`), `/groups` shows the two seeded groups she belongs to, each with its name and her role, and not the seeded group she is not in.
+- [AC-14] Signing in with a wrong password shows "Wrong e-mail or password" and no row appears in `sessions`.
+- [AC-15] Deleting Ana's row in `memberships` for one group and reloading `/groups` removes that group from the screen.
 
 ## Traceability
 <!-- Filled in from Exercise 3 onward: each AC id, and the test that names it. -->
 | Criterion | Test |
 | --- | --- |
-| AC-1 |  |
+| AC-1 | (from Exercise 3) |
 
 ## Spec vs result
 <!-- After the agent builds the slice: which criteria passed, which it missed or reinterpreted, and what you changed in this spec because of it. -->
